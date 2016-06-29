@@ -1,7 +1,6 @@
 package example
 
 import org.scalatest.FunSuite
-
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
@@ -37,7 +36,7 @@ import org.scalatest.junit.JUnitRunner
    * which tests that its argument evaluates to `true`. So one of the simplest
    * successful tests is the following:
    */
-  test("one plus one is two")(assert(1 + 1 == 2))
+  test("one plus one is two")(assert(1 + 1 === 2))
 
 
   /**
@@ -46,8 +45,8 @@ import org.scalatest.junit.JUnitRunner
    *
    * This allows tests to be written in a more readable manner:
    */
-  test("one plus one is three?") {
-    assert(1 + 1 == 3) // This assertion fails! Go ahead and fix it.
+  test("one plus one is two again") {
+    assert(1 + 1 === 2) // This assertion fails! Go ahead and fix it.
   }
 
 
@@ -71,9 +70,9 @@ import org.scalatest.junit.JUnitRunner
    *
    * We recommend to always use the `===` equality operator when writing tests.
    */
-  test("details why one plus one is not three") {
+  /*test("details why one plus one is not three") {
     assert(1 + 1 === 3) // Fix me, please!
-  }
+  }*/
 
   /**
    * In order to test the exceptional behavior of a methods, ScalaTest offers
@@ -116,11 +115,35 @@ import org.scalatest.junit.JUnitRunner
   test("sum of a few numbers") {
     assert(sum(List(1,2,0)) === 3)
   }
+  test("sum empty list") {
+    assert(sum(List()) === 0)
+  }
+  test("sum one element") {
+    assert(sum(List(99)) === 99)
+  }
+
+  test("sum negative numbers") {
+    assert(sum(List(-1,1)) === 0)
+  }
 
   test("max of a few numbers") {
     assert(max(List(3, 7, 2)) === 7)
   }
 
+  test("max empty list") {
+    intercept[NoSuchElementException] {
+      max(List())
+    }
+  }
 
+  test("max one element") {
+    assert(max(List(99)) === 99)
+  }
+
+  test("max identical elements") {
+    assert(max(List(9,9,0)) === 9)
+    assert(max(List(0,9,9)) === 9)
+    assert(max(List(9,0,9)) === 9)
+  }
 
 }
