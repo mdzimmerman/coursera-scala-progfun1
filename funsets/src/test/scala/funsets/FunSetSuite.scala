@@ -110,5 +110,64 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("intersect") {
+    new TestSets {
+      val s12 = union(s1, s2)
+      val s23 = union(s2, s3)
+      val i = intersect(s12, s23)
+      assert(!contains(i, 1))
+      assert( contains(i, 2))
+      assert(!contains(i, 3))
+    }
+  }
 
+  test("diff") {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      val d = diff(s123, s1)
+      assert(!contains(d, 1))
+      assert( contains(d, 2))
+      assert( contains(d, 3))
+    }
+  }
+
+  test("filter") {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      val f = filter(s123, x => x > 2)
+      assert(!contains(f, 1))
+      assert(!contains(f, 2))
+      assert( contains(f, 3))
+    }
+  }
+
+  test("forall") {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      val slimit = singletonSet(-1001)
+      assert( forall(s123, x => x > 0))
+      assert(!forall(s123, x => x > 2))
+      //assert(!forall(slimit, x => x > 0)), "implementation limitation")
+    }
+  }
+
+  test("exists") {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      assert(!exists(s123, x => x > 3 ))
+      assert( exists(s123, x => x == 2))
+    }
+  }
+
+  test("map") {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      printSet(s123)
+      val m = map(s123, x => x * x)
+      printSet(m)
+      assert(contains(m, 1))
+      assert(contains(m, 4))
+      assert(contains(m, 9))
+    }
+  }
 }
